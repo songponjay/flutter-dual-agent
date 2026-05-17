@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flutter Dual Agent Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Sarabun", sans-serif;
+      background: #eef6fc;
+      color: #1b1d22;
+    }
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      color: #02569b;
+    }
+    header p {
+      margin: 8px 0 0;
+      color: #33475b;
+      line-height: 1.6;
+    }
+    .lessons {
+      display: grid;
+      gap: 16px;
+    }
+    .card {
+      border-radius: 16px;
+      border: 1px solid rgba(2, 86, 155, 0.16);
+      background: #ffffff;
+      box-shadow: 0 16px 32px rgba(2, 86, 155, 0.08);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #02569b;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #032f55;
+      margin: 0;
+    }
+    .card-meta {
+      color: #556a82;
+      display: grid;
+      gap: 4px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .status {
+      font-size: 1.2rem;
+    }
+    .details {
+      display: none;
+      padding: 0 24px 20px;
+      color: #2f3b4c;
+      line-height: 1.75;
+      background: #f6fbff;
+    }
+    .details.visible {
+      display: block;
+    }
+    .detail-row {
+      margin: 12px 0 0;
+    }
+    .detail-label {
+      font-weight: 700;
+      color: #02569b;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Flutter Lesson Showcase</h1>
+      <p>สรุปสถานะการเรียนรู้ของบทเรียน Flutter พร้อมสถานะ pass/fail/pending</p>
+    </header>
+
+    <div class="lessons" id="lessonList"></div>
+  </div>
+
+  <script>
+    const lessons = [
+      {
+        title: "Riverpod AsyncNotifier",
+        date: "2026-05-17",
+        score: "2/2",
+        status: "pass",
+        concept: "จัดการ async state ด้วย AsyncValue.guard()"
+      },
+      {
+        title: "Clean Architecture",
+        date: "2026-05-18",
+        score: "1/2",
+        status: "fail",
+        concept: "แยก Data/Domain/Presentation"
+      },
+      {
+        title: "Memory Leak จาก Stream",
+        date: "",
+        score: "",
+        status: "pending",
+        concept: "ต้อง cancel() ใน dispose()"
+      }
+    ];
+
+    const statusIcon = {
+      pass: "✅",
+      fail: "❌",
+      pending: "⬜"
+    };
+
+    const lessonList = document.getElementById("lessonList");
+
+    lessons.forEach((lesson, index) => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-header">
+          <div>
+            <p class="status">${statusIcon[lesson.status] || "⬜"} ${lesson.status.toUpperCase()}</p>
+            <h2 class="card-title">${lesson.title}</h2>
+          </div>
+          <div class="card-meta">
+            <span>วันที่: ${lesson.date || "ยังไม่ได้กำหนด"}</span>
+            <span>คะแนน: ${lesson.score || "-"}</span>
+          </div>
+        </div>
+        <div class="details" id="details-${index}">
+          <div class="detail-row"><span class="detail-label">Concept:</span> ${lesson.concept}</div>
+        </div>
+      `;
+
+      card.addEventListener("click", () => {
+        const detail = document.getElementById(`details-${index}`);
+        detail.classList.toggle("visible");
+      });
+
+      lessonList.appendChild(card);
+    });
+  </script>
+</body>
+</html>
