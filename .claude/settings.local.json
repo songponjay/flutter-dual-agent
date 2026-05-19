@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); cd \"c:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\ai agent\\\\flutter-dual-agent\"; git add CLAUDE.md GEMINI.md knowledge/ prompts/ showcase/ templates/ .claude/; git commit -m \"Initial commit: Flutter Dual-Agent System \\(Teacher & Senior\\)\")"
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); cd \"c:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\ai agent\\\\flutter-dual-agent\"; git add CLAUDE.md GEMINI.md knowledge/ prompts/ showcase/ templates/ .claude/; git commit -m \"Initial commit: Flutter Dual-Agent System \\(Teacher & Senior\\)\")",
+      "Bash(powershell -command \"Get-Item 'C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\ai agent\\\\flutter-dual-agent' | Select-Object FullName, LastWriteTime\")"
     ]
   }
 }
