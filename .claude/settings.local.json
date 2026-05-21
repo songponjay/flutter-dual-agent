@@ -1,8 +1,36 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "agent",
+            "if": "Edit(*progress.md)",
+            "prompt": "The file curriculum/progress.md was just modified. Do the following: 1) Read curriculum/progress.md. 2) Read showcase/index.html. 3) For each line in progress.md matching '- DATE | MODULE | ผ่าน/ไม่ผ่าน (score)', find the matching lesson object in the JavaScript lessons array inside index.html and update: status to 'pass' if ผ่าน or 'fail' if ไม่ผ่าน, date to DATE, score to the text inside parentheses. Modules not in progress.md stay as 'pending'. Also update the notes array for any newly passed module based on the syllabus in curriculum/flutter-ai-work-log-summary-app.md. 4) Write the updated index.html. Do not change anything else in the file.",
+            "statusMessage": "อัปเดต showcase dashboard..."
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); cd \"c:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\ai agent\\\\flutter-dual-agent\"; git add CLAUDE.md GEMINI.md knowledge/ prompts/ showcase/ templates/ .claude/; git commit -m \"Initial commit: Flutter Dual-Agent System \\(Teacher & Senior\\)\")",
-      "Bash(powershell -command \"Get-Item 'C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\ai agent\\\\flutter-dual-agent' | Select-Object FullName, LastWriteTime\")"
+      "Bash(powershell -command \"Get-Item 'C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\ai agent\\\\flutter-dual-agent' | Select-Object FullName, LastWriteTime\")",
+      "WebFetch(domain:github.com)",
+      "Bash(gh api *)",
+      "Bash(python -c \"import sys, json; data=json.load\\(sys.stdin\\); [print\\(item['path']\\) for item in data.get\\('tree',[]\\) if 'SKILL.md' in item['path'] or item['type']=='tree']\")",
+      "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\9arm-skills-main\\\\scripts\")",
+      "Bash(Remove-Item -Recurse -Force \"C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\9arm-skills-main\\\\skills\\\\misc\")",
+      "Bash(Remove-Item -Force \"C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\9arm-skills-main\\\\skills\\\\engineering\\\\README.md\")",
+      "Bash(Remove-Item -Force \"C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\9arm-skills-main\\\\skills\\\\productivity\\\\README.md\")",
+      "Bash(Remove-Item -Force \"C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\9arm-skills-main\\\\.gitignore\")",
+      "PowerShell(Rename-Item -Path \"C:\\\\Users\\\\ja_01\\\\OneDrive\\\\Desktop\\\\9arm-skills-main\" -NewName \"skills-Zongjinx\")",
+      "Read(//c/Users/ja_01/OneDrive/Desktop/skills-Zongjinx/**)",
+      "Bash(gh repo *)",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
     ]
   }
 }
