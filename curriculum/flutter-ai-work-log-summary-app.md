@@ -28,7 +28,7 @@ Tech ที่โชว์ใน Portfolio:
 ---
 
 ## Module 1 — Clean Architecture Scaffold
-> **Java parallel:** เหมือน Java MVC/layered architecture แต่ชัดขึ้นมาก
+> **B4A parallel:** ใน B4A โค้ดทุกอย่างมักกองอยู่ใน Activity เดียว (Sub ยาวๆ ทำทุกอย่าง) — Clean Architecture คือการแยกโค้ดออกเป็น 3 ชั้น ชัดเจน ไม่ปนกัน
 
 ### Core Concepts
 ```
@@ -75,7 +75,7 @@ lib/
 ---
 
 ## Module 2 — Riverpod AsyncNotifier
-> **Java parallel:** Singleton + Observer pattern รวมกัน — Riverpod จัดการให้อัตโนมัติ
+> **B4A parallel:** ใน B4A ใช้ Global Variables เก็บ state + Events แจ้งเตือนเมื่อค่าเปลี่ยน — Riverpod ทำทั้งสองอย่างนี้อัตโนมัติ พร้อม handle loading/error ให้ด้วย
 
 ### Core Concepts
 
@@ -124,7 +124,7 @@ class WorkLogNotifier extends _$WorkLogNotifier {
 ---
 
 ## Module 3 — Isar DB Offline Cache
-> **Java parallel:** SQLite ใน Android แต่ไม่ต้องเขียน SQL เลย — type-safe ทั้งหมด
+> **B4A parallel:** ใน B4A ใช้ SQLite ต้องเขียน SQL string เอง เช่น `"SELECT * FROM logs WHERE date=?"` — Isar ทำแบบเดียวกันแต่เขียนเป็น Dart code ล้วนๆ ไม่มี SQL string เลย พลาดยากกว่ามาก
 
 ### Core Concepts
 
@@ -179,7 +179,7 @@ Future<Isar> isar(IsarRef ref) async {
 ---
 
 ## Module 4 — REST API + Error Handling + Retry
-> **Java parallel:** OkHttp + Retrofit — Dio คือตัวเทียบเท่าใน Flutter
+> **B4A parallel:** ใน B4A ใช้ OkHttpUtils2 หรือ HttpUtils2 ยิง HTTP request — Dio คือตัวเทียบเท่าใน Flutter แถมมี interceptors (เหมือน middleware) ที่ใส่ logic ได้โดยไม่ต้องแก้ทุก request
 
 ### Core Concepts
 
@@ -244,7 +244,7 @@ Future<T> withRetry<T>(Future<T> Function() fn, {int maxAttempts = 3}) async {
 ---
 
 ## Module 5 — AI Summary Integration (Claude + Gemini)
-> **Java parallel:** Strategy pattern — interface เดียว หลาย implementation
+> **B4A parallel:** ใน B4A ถ้าอยากสลับ AI provider ต้องเขียน If/Else กระจายทั่วโค้ด — ใน Flutter ใช้ abstract class เดียว สลับ implementation ได้โดยแก้แค่จุดเดียว UI ไม่รู้เลยว่าใช้ Claude หรือ Gemini
 
 ### Core Concepts
 
@@ -334,7 +334,7 @@ Work Logs:
 ---
 
 ## Module 6 — Dynamic Excel Export
-> **Java parallel:** Apache POI ใน Java — `excel` package คือ Flutter equivalent
+> **B4A parallel:** ใน B4A ใช้ ExcelLibrary หรือ jExcelApi สร้างไฟล์ .xls — Flutter ใช้ `excel` package ทำแบบเดียวกัน แถมแชร์ไฟล์ผ่าน `share_plus` ได้ทันที ไม่ต้องเปิด file manager
 
 ### Core Concepts
 
@@ -401,7 +401,7 @@ final kAvailableColumns = [
 ---
 
 ## Module 7 — Auth: Local Mock → Firebase
-> **Java parallel:** Session management + Strategy pattern
+> **B4A parallel:** ใน B4A มักเริ่มด้วย hardcode username/password ก่อน พอจะ deploy จริงค่อยต่อ server — pattern นี้เหมือนกันแต่ทำอย่างเป็นระบบ: Mock → Firebase โดยไม่ต้องแตะ UI เลย
 
 ### Core Concepts
 
@@ -482,7 +482,7 @@ redirect: (context, state) {
 ---
 
 ## Module 8 — Dark/Light Mode + Portfolio Polish
-> **Java parallel:** Swing Look & Feel switching — Flutter ทำได้โดย ThemeData
+> **B4A parallel:** ใน B4A เปลี่ยนสีต้องวน loop แก้ทุก View ทีละตัว — Flutter ใช้ ThemeData เปลี่ยนครั้งเดียวทั้งแอปเปลี่ยนหมด ไม่ต้องแตะ Widget เลย
 
 ### Core Concepts
 
