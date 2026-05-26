@@ -87,6 +87,64 @@
       font-weight: 700;
       color: #02569b;
     }
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #02569b;
+      margin: 40px 0 16px;
+    }
+    .quiz-card {
+      border-radius: 16px;
+      border: 1px solid rgba(2, 86, 155, 0.16);
+      background: #ffffff;
+      box-shadow: 0 16px 32px rgba(2, 86, 155, 0.08);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .quiz-module {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #02569b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .quiz-question {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #032f55;
+      margin-bottom: 12px;
+    }
+    .quiz-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+    }
+    .quiz-label {
+      font-weight: 700;
+      min-width: 110px;
+      color: #556a82;
+    }
+    .quiz-answer { color: #1b1d22; }
+    .quiz-correct { color: #1a7f37; }
+    .quiz-wrong { color: #cf222e; }
+    .quiz-explain {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #f0f7ff;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #2f3b4c;
+      line-height: 1.6;
+    }
+    .quiz-note {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #856404;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -97,6 +155,9 @@
     </header>
 
     <div class="lessons" id="lessonList"></div>
+
+    <h2 class="section-title">Quiz Log — คำถาม / คำตอบ / เฉลย</h2>
+    <div id="quizList"></div>
   </div>
 
   <script>
@@ -130,25 +191,42 @@
         ]
       },
       {
-        title: "Module 3: Isar DB Offline Cache",
-        date: "",
-        score: "",
-        status: "pending",
-        concept: "local database, type-safe queries"
+        title: "Module 3: SQLite Offline Cache",
+        date: "2026-05-25",
+        score: "1/2",
+        status: "pass",
+        concept: "sqflite, WorkLogModel toMap/fromMap, sqflite_ffi สำหรับ Windows",
+        notes: [
+          "Database เปิดครั้งเดียวด้วย static + ??= ป้องกันเปิดซ้ำ",
+          "ลืม sqfliteFfiInit() บน Windows → crash ทันที",
+          "tags เป็น List<String> ต้อง join(',') ก่อน save และ split(',') ตอน read"
+        ]
       },
       {
         title: "Module 4: REST API + Error Handling + Retry",
-        date: "",
-        score: "",
-        status: "pending",
-        concept: "Dio, interceptors, retry logic, Failure sealed class"
+        date: "2026-05-26",
+        score: "1/2",
+        status: "pass",
+        concept: "Dio, interceptors, retry logic, Failure sealed class",
+        notes: [
+          "Dio interceptors = middleware — ใส่ logic ได้โดยไม่แก้ทุก request",
+          "Repository: API first, fallback to local เมื่อ offline",
+          "Retry logic ใช้ exponential backoff — delay เพิ่มขึ้นทุก attempt",
+          "API key ต้องใช้ flutter_dotenv ไม่ hardcode ใน source"
+        ]
       },
       {
         title: "Module 5: AI Summary Integration",
-        date: "",
-        score: "",
-        status: "pending",
-        concept: "Claude/Gemini API, Strategy pattern"
+        date: "2026-05-27",
+        score: "1/2",
+        status: "pass",
+        concept: "Strategy Pattern ผ่าน abstract class, Gemini API, สลับ provider ด้วย Riverpod",
+        notes: [
+          "AiSummaryService (abstract) อยู่ใน domain — ไม่รู้จัก Dio หรือ package ใดๆ",
+          "Implementation (Claude/Gemini) อยู่ใน data layer",
+          "Riverpod provider ตัวเดียว watch enum แล้ว return implementation ที่ถูก",
+          "HTTP 429 = rate limit ชั่วคราว — ควร retry with backoff ไม่ใช่ error ทันที"
+        ]
       },
       {
         title: "Module 6: Dynamic Excel Export",
@@ -178,6 +256,47 @@
       fail: "❌",
       pending: "⬜"
     };
+
+    const quizLog = [
+      {
+        module: "Module 5 — AI Summary Integration",
+        question: "ทำไม AiSummaryService ถึงต้องอยู่ใน domain layer แทนที่จะอยู่ใน data layer?",
+        answered: "B",
+        correct: "B",
+        pass: true,
+        explain: "domain layer ไม่ขึ้นกับ package ภายนอก — ถ้าวันหลังเปลี่ยนจาก Gemini เป็น OpenAI ไม่ต้องแก้ domain เลย"
+      },
+      {
+        module: "Module 5 — AI Summary Integration",
+        question: "ถ้า Gemini API ตอบกลับ HTTP 429 (rate limit) app ควรทำอะไร?",
+        answered: "A — แสดง error message ทันที",
+        correct: "B — retry อัตโนมัติหลัง delay แล้วค่อยแสดง error ถ้าหมด max attempts",
+        pass: false,
+        note: "ไม่นับผิด — ยังไม่ได้สอนเรื่อง 429 ก่อนถาม",
+        explain: "429 = ส่ง request เร็วเกินไปชั่วคราว ไม่ใช่ quota หมดถาวร — wait 1-2 วิแล้ว retry มักผ่านเลย"
+      }
+    ];
+
+    const quizList = document.getElementById("quizList");
+    quizLog.forEach((q) => {
+      const card = document.createElement("div");
+      card.className = "quiz-card";
+      card.innerHTML = `
+        <div class="quiz-module">${q.module}</div>
+        <div class="quiz-question">${q.question}</div>
+        <div class="quiz-row">
+          <span class="quiz-label">คำตอบที่ตอบ:</span>
+          <span class="quiz-answer ${q.pass ? 'quiz-correct' : 'quiz-wrong'}">${q.answered} ${q.pass ? '✅' : '❌'}</span>
+        </div>
+        <div class="quiz-row">
+          <span class="quiz-label">เฉลย:</span>
+          <span class="quiz-correct">${q.correct}</span>
+        </div>
+        ${q.note ? `<div class="quiz-note">* ${q.note}</div>` : ''}
+        <div class="quiz-explain">${q.explain}</div>
+      `;
+      quizList.appendChild(card);
+    });
 
     const lessonList = document.getElementById("lessonList");
 

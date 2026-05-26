@@ -1,0 +1,14 @@
+# Quiz Log
+
+## Module 5 — AI Summary Integration
+
+**ข้อ 1:** ทำไม `AiSummaryService` ถึงต้องอยู่ใน domain layer แทนที่จะอยู่ใน data layer?
+- คำตอบที่ตอบ: B
+- เฉลย: B ✅
+- อธิบาย: domain layer ไม่ขึ้นกับ package ภายนอก — ถ้าวันหลังเปลี่ยนจาก Gemini เป็น OpenAI ไม่ต้องแก้ domain เลย
+
+**ข้อ 2:** ถ้า Gemini API ตอบกลับ HTTP 429 (rate limit) app ควรทำอะไร?
+- คำตอบที่ตอบ: A (แสดง error ทันที)
+- เฉลย: B — retry อัตโนมัติหลัง delay แล้วค่อยแสดง error ถ้าหมด max attempts
+- หมายเหตุ: ไม่นับผิด เพราะยังไม่ได้สอนเรื่อง 429 ก่อนถาม
+- อธิบาย: 429 = "ส่ง request เร็วเกินไปชั่วคราว" ไม่ใช่ quota หมดถาวร — wait 1-2 วิแล้ว retry มักผ่านเลย
