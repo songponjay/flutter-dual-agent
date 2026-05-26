@@ -1,7 +1,7 @@
 # Syllabus: Flutter AI Work Log & Summary App
 
 **เป้าหมาย:** portfolio แอป productivity สำหรับสมัคร Flutter Dev สาย startup/tech (ย่านลาดพร้าว/จตุจักร)
-**Stack:** Flutter + Riverpod + Clean Architecture + Isar DB + Claude/Gemini API + Excel Export
+**Stack:** Flutter + Riverpod + Clean Architecture + SQLite (sqflite) + Claude/Gemini API + Excel Export
 **ผู้เรียน:** มีพื้นฐาน Java, เคยทำ Flutter (ระบบตั๋วรถเมล์) 2 ปีก่อน
 
 ---
@@ -13,7 +13,7 @@ Features:
 ✅ บันทึกงาน free-text ไม่ lock format
 ✅ AI สรุปงาน weekly/monthly (Claude API + Gemini API สลับได้)
 ✅ Dynamic Excel export (เลือก column เองได้)
-✅ Offline cache ด้วย Isar DB
+✅ Offline cache ด้วย SQLite (sqflite)
 ✅ Dark/Light mode
 ✅ Auth: Local mock → Firebase Auth (Bonus บทสุดท้าย)
 
@@ -35,7 +35,7 @@ Tech ที่โชว์ใน Portfolio:
 lib/
 ├── data/
 │   ├── datasources/
-│   │   ├── work_log_local_datasource.dart   ← Isar DB
+│   │   ├── work_log_local_datasource.dart   ← SQLite (sqflite)
 │   │   └── work_log_remote_datasource.dart  ← REST API
 │   ├── models/
 │   │   └── work_log_model.dart              ← JSON parsing
@@ -59,7 +59,7 @@ lib/
 
 **กฎทอง (ห้ามละเมิด):**
 - Domain layer ต้องไม่ import Flutter หรือ package ภายนอกใดๆ
-- Presentation ไม่รู้จัก Isar หรือ Dio
+- Presentation ไม่รู้จัก sqflite หรือ Dio
 - Data ไม่รู้จัก Widget
 
 ### Common Pitfalls
@@ -123,54 +123,72 @@ class WorkLogNotifier extends _$WorkLogNotifier {
 
 ---
 
-## Module 3 — Isar DB Offline Cache
-> **B4A parallel:** ใน B4A ใช้ SQLite ต้องเขียน SQL string เอง เช่น `"SELECT * FROM logs WHERE date=?"` — Isar ทำแบบเดียวกันแต่เขียนเป็น Dart code ล้วนๆ ไม่มี SQL string เลย พลาดยากกว่ามาก
+## Module 3 — SQLite Offline Cache (sqflite)
+> **B4A parallel:** ใน B4A ใช้ SQLite เขียน SQL string เอง เช่น `"SELECT * FROM logs WHERE date=?"` — Flutter ใช้ sqflite package ทำแบบเดียวกัน แต่จัดการ Database ผ่าน Dart code และรองรับ Windows/macOS ผ่าน sqflite_ffi
 
 ### Core Concepts
 
 ```dart
-// Schema (≈ Java @Entity ใน Room)
-@collection
+// Model (≈ B4A Map/Type ที่ใช้กับ SQL)
 class WorkLogModel {
-  Id id = Isar.autoIncrement;
+  final int? id;
+  final DateTime date;
+  final String content;
+  final List<String> tags;
 
-  @Index()
-  late DateTime date;
-  late String content;
-  late List<String> tags;
+  Map<String, dynamic> toMap() => {
+    if (id != null) 'id': id,
+    'date': date.toIso8601String(),
+    'content': content,
+    'tags': tags.join(','),
+  };
+
+  factory WorkLogModel.fromMap(Map<String, dynamic> map) => WorkLogModel(
+    id: map['id'],
+    date: DateTime.parse(map['date']),
+    content: map['content'],
+    tags: (map['tags'] as String).split(','),
+  );
 }
 
 // Datasource
 class WorkLogLocalDatasource {
-  final Isar _isar;
-  WorkLogLocalDatasource(this._isar);
+  static Database? _db;
 
-  Future<List<WorkLogModel>> getAll() =>
-      _isar.workLogModels.where().sortByDateDesc().findAll();
+  Future<Database> get db async {
+    _db ??= await _initDb(); // เปิดครั้งเดียว
+    return _db!;
+  }
+
+  Future<List<WorkLogModel>> getAll() async {
+    final maps = await (await db).query('work_logs', orderBy: 'date DESC');
+    return maps.map((m) => WorkLogModel.fromMap(m)).toList();
+  }
 
   Future<void> save(WorkLogModel model) async {
-    await _isar.writeTxn(() => _isar.workLogModels.put(model));
+    await (await db).insert('work_logs', model.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> delete(int id) async {
-    await _isar.writeTxn(() => _isar.workLogModels.delete(id));
+    await (await db).delete('work_logs', where: 'id = ?', whereArgs: [id]);
   }
 }
 ```
 
-**เปิด Isar (ทำครั้งเดียว):**
+**เปิด DB (ทำครั้งเดียว ใน main.dart):**
 ```dart
-// ใน main.dart หรือ Riverpod Provider
-@riverpod
-Future<Isar> isar(IsarRef ref) async {
-  return Isar.open([WorkLogModelSchema]);
+// Windows/macOS ต้องใช้ sqflite_ffi
+if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
 }
 ```
 
 ### Common Pitfalls
-- ❌ `Isar.open()` หลายครั้ง → `IsarError: Instance already opened`
-- ❌ write นอก `writeTxn` → exception
-- ❌ ลืม run `dart run build_runner build` หลังแก้ schema → generated file เก่า
+- ❌ `Database` เปิดหลายครั้ง → ใช้ static + `??=` เปิดครั้งเดียว
+- ❌ ลืม `sqfliteFfiInit()` บน Windows/macOS → crash ทันที
+- ❌ `tags` เป็น `List<String>` แต่ SQLite เก็บ String → ต้อง `join(',')` ก่อน save และ `split(',')` ตอน read
 
 ### Homework
 สร้าง `WorkLogLocalDatasource` ครบ 4 operations แล้ว integrate เข้า Repository impl
@@ -542,7 +560,7 @@ MaterialApp.router(
 |------|--------|-----------|
 | Clean Architecture | 1 | โค้ดสะอาด, maintainable |
 | Riverpod AsyncNotifier | 2 | state management ระดับ production |
-| Isar DB | 3 | offline-first thinking |
+| SQLite (sqflite) | 3 | offline-first thinking |
 | Dio + Retry | 4 | error handling ครบ |
 | Claude/Gemini API | 5 | AI integration, Strategy pattern |
 | Dynamic Excel | 6 | File I/O, real-world feature |
