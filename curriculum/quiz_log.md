@@ -1,5 +1,29 @@
 # Quiz Log
 
+## Module 8 — Dark/Light Mode + Portfolio Polish
+
+**ข้อ 1:** ทำไมต้องลบ `const` ออกจาก `ProviderScope` เมื่อใส่ `overrides`?
+- คำตอบที่ตอบ: C (ProviderScope ไม่รองรับ const เลย)
+- เฉลย: B ❌
+- อธิบาย: `const` ต้องการค่า compile-time แต่ `SharedPreferences.getInstance()` โหลดตอน runtime จึงใส่ใน const expression ไม่ได้
+
+**ข้อ 2:** ถ้า hardcode `Colors.white` ใน Widget จะเกิดอะไรใน dark mode?
+- คำตอบที่ตอบ: C (Flutter auto-convert ให้)
+- เฉลย: B ❌
+- อธิบาย: Flutter ไม่ auto-convert สี — ถ้า hardcode ไว้ Widget นั้นยังขาวอยู่ อาจกลายเป็น white-on-white อ่านไม่ออก ควรใช้ `Theme.of(context).colorScheme` แทนเสมอ
+
+## Module 7 — Auth: Local Mock → Firebase
+
+**ข้อ 1:** ทำไม GoRouter ต้องใช้ refreshListenable?
+- คำตอบที่ตอบ: C (ให้ LoginScreen rebuild อัตโนมัติ)
+- เฉลย: B ❌
+- อธิบาย: refreshListenable บอก GoRouter ให้ re-evaluate redirect() ใหม่เมื่อ auth state เปลี่ยน ไม่ใช่ rebuild Widget
+
+**ข้อ 2:** ถ้าอยากเปลี่ยนจาก MockAuthRepository เป็น FirebaseAuthRepository ต้องแก้ไฟล์ไหน?
+- คำตอบที่ตอบ: B
+- เฉลย: B ✅
+- อธิบาย: แก้แค่ authRepositoryProvider บรรทัดเดียว เพราะ AuthRepository เป็น abstract class ทุกส่วนอื่นไม่รู้ว่าใช้ implementation ไหน
+
 ## Module 6 — Dynamic Excel Export
 
 **ข้อ 1:** ควรใช้ directory ไหนก่อน share_plus?
