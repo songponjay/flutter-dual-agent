@@ -230,10 +230,18 @@
       },
       {
         title: "Module 6: Dynamic Excel Export",
-        date: "",
-        score: "",
-        status: "pending",
-        concept: "File I/O, dynamic columns, share_plus"
+        date: "2026-05-27",
+        score: "1/2",
+        status: "pass",
+        concept: "ExportColumn pattern, excel package, share_plus, Windows fallback",
+        notes: [
+          "ExportColumn เก็บ function getValue(WorkLog) → String ไว้กับตัวเอง ไม่ hardcode ใน service",
+          "workbook.encode() อาจ return null ถ้า sheet ว่าง — ต้องเช็คก่อน writeAsBytes เสมอ",
+          "iOS ต้องใช้ getTemporaryDirectory() + share_plus — getApplicationDocumentsDirectory() share ไม่ได้",
+          "Windows fallback: Process.run('explorer.exe', [file.parent.path]) เพราะ share_plus รองรับน้อย",
+          "Excel.createExcel() สร้าง Sheet1 มาอัตโนมัติ — ต้อง workbook.delete('Sheet1') ออก",
+          "share_plus v13 เปลี่ยน API เป็น SharePlus.instance.share(ShareParams(...)) แทน shareXFiles"
+        ]
       },
       {
         title: "Module 7: Auth Mock → Firebase",
@@ -258,6 +266,22 @@
     };
 
     const quizLog = [
+      {
+        module: "Module 6 — Dynamic Excel Export",
+        question: "ควรใช้ directory ไหนก่อน share_plus บน iOS?",
+        answered: "C — ใช้ได้ทั้งคู่",
+        correct: "B — getTemporaryDirectory()",
+        pass: false,
+        explain: "iOS sandbox ไม่อนุญาตให้ share ไฟล์จาก Documents โดยตรง ต้องใช้ tmp folder เท่านั้น"
+      },
+      {
+        module: "Module 6 — Dynamic Excel Export",
+        question: "workbook.encode() return null แล้วไม่เช็ค จะเกิดอะไร?",
+        answered: "C — Crash ด้วย Null check operator",
+        correct: "C — Crash ด้วย Null check operator",
+        pass: true,
+        explain: "encode() คืนค่า List<int>? — ถ้า sheet ว่างจะ return null แล้ว ! operator crash ทันที"
+      },
       {
         module: "Module 5 — AI Summary Integration",
         question: "ทำไม AiSummaryService ถึงต้องอยู่ใน domain layer แทนที่จะอยู่ใน data layer?",

@@ -1,5 +1,17 @@
 # Quiz Log
 
+## Module 6 — Dynamic Excel Export
+
+**ข้อ 1:** ควรใช้ directory ไหนก่อน share_plus?
+- คำตอบที่ตอบ: C
+- เฉลย: B (getTemporaryDirectory()) ❌
+- อธิบาย: iOS sandbox ไม่อนุญาตให้ share ไฟล์จาก Documents โดยตรง ต้องใช้ tmp folder
+
+**ข้อ 2:** workbook.encode() return null แล้วไม่เช็ค จะเกิดอะไร?
+- คำตอบที่ตอบ: C
+- เฉลย: C ✅
+- อธิบาย: encode() คืนค่า List<int>? — ถ้า sheet ว่างจะ return null แล้ว ! operator crash ทันที
+
 ## Module 5 — AI Summary Integration
 
 **ข้อ 1:** ทำไม `AiSummaryService` ถึงต้องอยู่ใน domain layer แทนที่จะอยู่ใน data layer?
