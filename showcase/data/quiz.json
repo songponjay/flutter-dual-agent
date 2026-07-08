@@ -1,5 +1,21 @@
 [
   {
+    "module": "React Module 2 — Node.js + Express + SQLite CRUD",
+    "question": "ทำไม useEffect ที่ fetch API ต้องมี [] (empty dependency array)?",
+    "answered": "B",
+    "correct": "B",
+    "pass": true,
+    "explain": "[] = ทำครั้งเดียวตอน mount (เหมือน initState) ถ้าไม่ใส่ useEffect รันทุก render → setState → re-render → รันอีก = infinite loop (ข้อสอบสัมภาษณ์ยอดฮิต)"
+  },
+  {
+    "module": "React Module 2 — Node.js + Express + SQLite CRUD",
+    "question": "ทำไม setCars(prev => [newCar, ...prev]) ใช้ spread แทน cars.push(newCar)?",
+    "answered": "C",
+    "correct": "C",
+    "pass": true,
+    "explain": "React เปรียบเทียบ state ด้วย reference equality — push mutate array เดิม reference ไม่เปลี่ยน → React มองว่าเหมือนเดิม ไม่ trigger re-render ต้อง immutable update สร้าง array/object ใหม่เสมอ"
+  },
+  {
     "module": "React Module 1 — useState + CarList (mock data)",
     "question": "อะไรทำให้ตัวเลข/ตารางบนจออัปเดตเมื่อ state เปลี่ยน?",
     "answered": "B",

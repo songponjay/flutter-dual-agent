@@ -1,5 +1,17 @@
 # Quiz Log
 
+## React Module 2 — Node.js + Express + SQLite CRUD
+
+**ข้อ 1:** ทำไม useEffect ที่ fetch API ต้องมี [] (empty dependency array)?
+- คำตอบที่ตอบ: B
+- เฉลย: B ✅
+- อธิบาย: [] = ทำครั้งเดียวตอน mount (เหมือน initState) ถ้าไม่ใส่ useEffect รันทุก render → setState → re-render → รันอีก = infinite loop
+
+**ข้อ 2:** ทำไม setCars(prev => [newCar, ...prev]) ใช้ spread แทน cars.push(newCar)?
+- คำตอบที่ตอบ: C
+- เฉลย: C ✅
+- อธิบาย: React เปรียบเทียบ state ด้วย reference equality — push ทำให้ reference ไม่เปลี่ยน React ไม่ trigger re-render ต้อง immutable update สร้าง array/object ใหม่เสมอ
+
 ## React Module 1 — useState + CarList (mock data)
 
 **ข้อ 1:** อะไรทำให้ตัวเลข/ตารางบนจออัปเดตเมื่อ state เปลี่ยน?

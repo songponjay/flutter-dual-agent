@@ -1,6 +1,27 @@
 [
   {
     "stack": "react",
+    "title": "React Module 2: Node.js + Express + SQLite CRUD (4/4)",
+    "date": "2026-07-08",
+    "score": "2/2",
+    "status": "pass",
+    "concept": "Express Router, better-sqlite3, useEffect fetch, Controlled Form, Lift State Up, Inline Edit, Immutable Update",
+    "notes": [
+      "Full-stack CRUD ครบวงจร: React (:5173) → Express (:3001) → SQLite (cars.db)",
+      "server.js ≈ main.dart | express() ≈ MaterialApp | app.listen(3001) ≈ runApp()",
+      "cors() ต้องมาก่อน express.json() ก่อน routes เสมอ ไม่งั้น React เรียก API ไม่ได้",
+      "useEffect(() => { fetch }, []) — [] เป็น dependency array ที่บอกให้ทำครั้งเดียว ลืมใส่ = infinite loop",
+      "Immutable update บังคับ: setCars(prev => [newCar, ...prev]) — push() ไม่ trigger re-render",
+      "Lift State Up: ย้าย cars state ขึ้น App เพราะ CarForm + CarList ใช้ร่วมกัน",
+      "Controlled Component: value + onChange ทำงานคู่กัน = React ควบคุมค่า input",
+      "Prepared statement (?) ใน better-sqlite3 กัน SQL injection อัตโนมัติ",
+      "req.params.id เป็น string เสมอ ต้อง Number() ถ้าเทียบกับตัวเลข",
+      "การอ่าน error message ใน stack trace = สกิลดีบั๊กสำคัญที่สุด (HTTP 500 = ไปดู terminal backend)",
+      ".gitignore ต้องมี node_modules/ ก่อน push GitHub — ไม่งั้น repo หนัก 100+ MB"
+    ]
+  },
+  {
+    "stack": "react",
     "title": "React Module 1: useState + CarList (mock data)",
     "date": "2026-07-08",
     "score": "2/2",
