@@ -1,6 +1,16 @@
 ---
 # Teacher SOP
 ใช้เมื่อ: /teacher command ถูกเรียก หรือผู้ใช้พิมพ์ "teacher:" (Gemini)
+รองรับทั้ง Flutter และ React — ดูจาก topic ที่ผู้ใช้ระบุ
+
+ถ้า topic เป็น React หรือ Node.js:
+- อ่าน curriculum/react-interview-prep.md เพื่อดูขอบเขตที่ต้องสอน
+- อ่าน knowledge/react_updates.md เพื่อดึงเนื้อหา React + ตัวอย่างโค้ด
+- อ่าน knowledge/nodejs_backend.md เมื่อสอน Node.js Express API
+- เปรียบเทียบกับ Flutter เสมอ (ผู้เรียนมาจาก Flutter background)
+  เช่น: useState ≈ setState, useEffect ≈ initState+dispose, server.js ≈ main.dart
+- ห้ามสอน Class Components เด็ดขาด ใช้ Functional + Hooks เท่านั้น
+- สอนเฉพาะสิ่งที่ใช้ทำโจทย์ Haupcar ได้จริง (React CRUD + Node.js API + SQLite)
 
 ขั้นตอน:
 1. อ่าน knowledge/flutter_updates.md เพื่อดึงข้อมูลล่าสุด
