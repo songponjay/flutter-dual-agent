@@ -8,3 +8,4 @@
 - 2026-05-27 | Module 6: Dynamic Excel Export | ผ่าน (quiz 1/2 ข้อ)
 - 2026-05-27 | Module 7: Auth: Local Mock → Firebase | ผ่าน (quiz 1/2 ข้อ)
 - 2026-05-27 | Module 8: Dark/Light Mode + Portfolio Polish | ผ่าน (quiz 0/2 ข้อ)
+- 2026-07-08 | React Module 1: useState + useEffect + CarList (mock data) | ผ่าน (quiz 2/2 ข้อ)

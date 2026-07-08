@@ -1,5 +1,17 @@
 # Quiz Log
 
+## React Module 1 — useState + CarList (mock data)
+
+**ข้อ 1:** อะไรทำให้ตัวเลข/ตารางบนจออัปเดตเมื่อ state เปลี่ยน?
+- คำตอบที่ตอบ: B
+- เฉลย: B ✅
+- อธิบาย: เรียก setter (setCount/setCars) เท่านั้นที่ trigger ให้ React render ใหม่ — แก้ตัวแปรตรงๆ ค่าเปลี่ยนแต่จอไม่ขยับ (เหมือน setState ของ Flutter)
+
+**ข้อ 2:** ตอน render list ด้วย cars.map(...) ทำไมต้องใส่ key={car.id}?
+- คำตอบที่ตอบ: B
+- เฉลย: B ✅
+- อธิบาย: key ช่วย React ระบุว่าแถวไหนคือรายการเดิมเมื่อ list เปลี่ยน จะได้อัปเดต DOM ถูกตัว ไม่ render ผิด (เทียบ key: Key() ใน Flutter)
+
 ## Module 8 — Dark/Light Mode + Portfolio Polish
 
 **ข้อ 1:** ทำไมต้องลบ `const` ออกจาก `ProviderScope` เมื่อใส่ `overrides`?

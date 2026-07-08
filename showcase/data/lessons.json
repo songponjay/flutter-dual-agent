@@ -1,5 +1,22 @@
 [
   {
+    "stack": "react",
+    "title": "React Module 1: useState + CarList (mock data)",
+    "date": "2026-07-08",
+    "score": "2/2",
+    "status": "pass",
+    "concept": "Component = ฟังก์ชัน return JSX, useState, .map() render list, key prop, Vite + Git setup",
+    "notes": [
+      "Component คือฟังก์ชันธรรมดาที่ return JSX — เทียบ build() ของ Flutter ที่ return Widget",
+      "useState ≈ setState: ห้ามแก้ค่าตรงๆ ต้องเรียก setter (setCount/setCars) ถึงจะ render ใหม่",
+      "cars.map((car) => <tr key={car.id}>) = ListView.builder ของ Flutter — key จำเป็นเสมอ",
+      "ชื่อ component ต้องขึ้นต้นตัวใหญ่ (<CarList/>) ไม่งั้น React นึกว่าเป็น HTML tag",
+      "comment ใน JSX ใช้ {/* */} ไม่ใช่ // — หรือกด Ctrl+/ ให้ VS Code สลับ syntax ให้เอง",
+      "git repo อยู่ชั้นนอก (react-test) ครอบทั้ง frontend + backend — ระวัง git ซ้อนกัน",
+      "ตอน npm create vite ต้องกดลูกศรเลือก React + JavaScript ก่อน Enter (default คือ Vanilla)"
+    ]
+  },
+  {
     "stack": "flutter",
     "title": "Module 8: Dark/Light Mode + Portfolio Polish",
     "date": "2026-05-27",
