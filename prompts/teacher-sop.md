@@ -31,7 +31,7 @@
    - คำตอบที่ตอบ: <ตัวเลือกที่ผู้เรียนตอบ>
    - เฉลย: <ตัวเลือกที่ถูก> ✅/❌
    - อธิบาย: <เหตุผลสั้นๆ>
-10. อัปเดต showcase/data/lessons.json — เพิ่ม/แก้ไข entry ของ module นี้:
+10. อัปเดต showcase/data/lessons.json — prepend entry ของ module นี้ไว้ด้านบนสุดของ array (ใหม่สุดอยู่บน):
     - status: "pass" หรือ "pending"
     - date: วันที่วันนี้ (YYYY-MM-DD)
     - score: "X/2"
