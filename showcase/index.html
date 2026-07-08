@@ -156,12 +156,13 @@
 
     <h2 class="section-title">⚛️ React</h2>
     <div class="lessons" id="reactList"></div>
+    <h3 class="section-title" style="font-size:1.1rem;margin-top:20px;">📝 React Quiz Log</h3>
+    <div id="reactQuizList"></div>
 
     <h2 class="section-title">🐦 Flutter</h2>
     <div class="lessons" id="flutterList"></div>
-
-    <h2 class="section-title">Quiz Log — คำถาม / คำตอบ / เฉลย</h2>
-    <div id="quizList"></div>
+    <h3 class="section-title" style="font-size:1.1rem;margin-top:20px;">📝 Flutter Quiz Log</h3>
+    <div id="flutterQuizList"></div>
   </div>
 
   <script>
@@ -172,8 +173,9 @@
     ]).then(([lessons, quizLog]) => {
       const statusIcon = { pass: "✅", fail: "❌", pending: "⬜" };
 
-      // render quiz log
-      const quizList = document.getElementById("quizList");
+      // render quiz log — แยกตาม stack (React quiz ใต้ React lessons / Flutter quiz ใต้ Flutter lessons)
+      const reactQuizList = document.getElementById("reactQuizList");
+      const flutterQuizList = document.getElementById("flutterQuizList");
       quizLog.forEach((q) => {
         const card = document.createElement("div");
         card.className = "quiz-card";
@@ -191,7 +193,9 @@
           ${q.note ? `<div class="quiz-note">* ${q.note}</div>` : ''}
           <div class="quiz-explain">${q.explain}</div>
         `;
-        quizList.appendChild(card);
+        // module ที่ขึ้นต้นด้วย "React" ไปอยู่ฝั่ง React ที่เหลือไป Flutter
+        const target = q.module.startsWith("React") ? reactQuizList : flutterQuizList;
+        target.appendChild(card);
       });
 
       // render lesson cards แยก section ตาม stack
