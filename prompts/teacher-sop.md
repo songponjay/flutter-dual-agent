@@ -32,6 +32,7 @@
    - เฉลย: <ตัวเลือกที่ถูก> ✅/❌
    - อธิบาย: <เหตุผลสั้นๆ>
 10. อัปเดต showcase/data/lessons.json — prepend entry ของ module นี้ไว้ด้านบนสุดของ array (ใหม่สุดอยู่บน):
+    - stack: "flutter" หรือ "react" (ตาม topic ที่สอน)
     - status: "pass" หรือ "pending"
     - date: วันที่วันนี้ (YYYY-MM-DD)
     - score: "X/2"
