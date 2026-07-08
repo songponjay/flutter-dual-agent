@@ -161,195 +161,61 @@
   </div>
 
   <script>
-    const lessons = [
-      {
-        title: "Module 1: Clean Architecture Scaffold",
-        date: "2026-05-19",
-        score: "1/2",
-        status: "pass",
-        concept: "แยก Data/Domain/Presentation, entity, abstract repository",
-        notes: [
-          "Domain layer ห้าม import Flutter หรือ package ภายนอกเด็ดขาด",
-          "Entity คือ pure Dart class ไม่มี toJson() — Model ทำหน้าที่นี้",
-          "Repository ใน Domain = abstract class (เหมือน interface ใน B4A)",
-          "RepositoryImpl ใน Data = คลาสที่ implement จริง"
-        ]
-      },
-      {
-        title: "Module 2: Riverpod AsyncNotifier",
-        date: "2026-05-21",
-        score: "1/2",
-        status: "pass",
-        concept: "AsyncNotifier จัดการ state ทุก screen พร้อมกัน — เหมือน B4A ที่ทุกหน้าดึงข้อมูลจากที่เดียวกัน",
-        notes: [
-          "ref.watch() ใช้ใน build() เท่านั้น — ถ้าใช้ใน onPressed จะ crash",
-          "ref.read() ใช้ใน action เช่น addLog(), deleteLog()",
-          "AsyncValue มี 3 state: loading / error / data — ต้องจัดการครบ",
-          "ref.invalidateSelf() = บอกให้ build() รันใหม่ ทุก screen อัปเดต",
-          "@riverpod (ตัวเล็ก) = autoDispose อัตโนมัติ ไม่มี memory leak",
-          "ProviderScope ต้องครอบ runApp() เสมอ — ไม่งั้น ref.watch() crash"
-        ]
-      },
-      {
-        title: "Module 3: SQLite Offline Cache",
-        date: "2026-05-25",
-        score: "1/2",
-        status: "pass",
-        concept: "sqflite, WorkLogModel toMap/fromMap, sqflite_ffi สำหรับ Windows",
-        notes: [
-          "Database เปิดครั้งเดียวด้วย static + ??= ป้องกันเปิดซ้ำ",
-          "ลืม sqfliteFfiInit() บน Windows → crash ทันที",
-          "tags เป็น List<String> ต้อง join(',') ก่อน save และ split(',') ตอน read"
-        ]
-      },
-      {
-        title: "Module 4: REST API + Error Handling + Retry",
-        date: "2026-05-26",
-        score: "1/2",
-        status: "pass",
-        concept: "Dio, interceptors, retry logic, Failure sealed class",
-        notes: [
-          "Dio interceptors = middleware — ใส่ logic ได้โดยไม่แก้ทุก request",
-          "Repository: API first, fallback to local เมื่อ offline",
-          "Retry logic ใช้ exponential backoff — delay เพิ่มขึ้นทุก attempt",
-          "API key ต้องใช้ flutter_dotenv ไม่ hardcode ใน source"
-        ]
-      },
-      {
-        title: "Module 5: AI Summary Integration",
-        date: "2026-05-27",
-        score: "1/2",
-        status: "pass",
-        concept: "Strategy Pattern ผ่าน abstract class, Gemini API, สลับ provider ด้วย Riverpod",
-        notes: [
-          "AiSummaryService (abstract) อยู่ใน domain — ไม่รู้จัก Dio หรือ package ใดๆ",
-          "Implementation (Claude/Gemini) อยู่ใน data layer",
-          "Riverpod provider ตัวเดียว watch enum แล้ว return implementation ที่ถูก",
-          "HTTP 429 = rate limit ชั่วคราว — ควร retry with backoff ไม่ใช่ error ทันที"
-        ]
-      },
-      {
-        title: "Module 6: Dynamic Excel Export",
-        date: "2026-05-27",
-        score: "1/2",
-        status: "pass",
-        concept: "ExportColumn pattern, excel package, share_plus, Windows fallback",
-        notes: [
-          "ExportColumn เก็บ function getValue(WorkLog) → String ไว้กับตัวเอง ไม่ hardcode ใน service",
-          "workbook.encode() อาจ return null ถ้า sheet ว่าง — ต้องเช็คก่อน writeAsBytes เสมอ",
-          "iOS ต้องใช้ getTemporaryDirectory() + share_plus — getApplicationDocumentsDirectory() share ไม่ได้",
-          "Windows fallback: Process.run('explorer.exe', [file.parent.path]) เพราะ share_plus รองรับน้อย",
-          "Excel.createExcel() สร้าง Sheet1 มาอัตโนมัติ — ต้อง workbook.delete('Sheet1') ออก",
-          "share_plus v13 เปลี่ยน API เป็น SharePlus.instance.share(ShareParams(...)) แทน shareXFiles"
-        ]
-      },
-      {
-        title: "Module 7: Auth Mock → Firebase",
-        date: "2026-05-27",
-        score: "1/2",
-        status: "pass",
-        concept: "MockAuthRepository, GoRouter redirect, Firebase swap"
-      },
-      {
-        title: "Module 8: Dark/Light Mode + Portfolio Polish",
-        date: "2026-05-27",
-        score: "0/2",
-        status: "pass",
-        concept: "ThemeData, SharedPreferences, Add/Edit WorkLog form"
-      }
-    ];
+    // โหลด data จาก JSON — teacher agent อัปเดตไฟล์เหล่านี้อัตโนมัติหลังจบแต่ละ module
+    Promise.all([
+      fetch('data/lessons.json').then(r => r.json()),
+      fetch('data/quiz.json').then(r => r.json())
+    ]).then(([lessons, quizLog]) => {
+      const statusIcon = { pass: "✅", fail: "❌", pending: "⬜" };
 
-    const statusIcon = {
-      pass: "✅",
-      fail: "❌",
-      pending: "⬜"
-    };
-
-    const quizLog = [
-      {
-        module: "Module 6 — Dynamic Excel Export",
-        question: "ควรใช้ directory ไหนก่อน share_plus บน iOS?",
-        answered: "C — ใช้ได้ทั้งคู่",
-        correct: "B — getTemporaryDirectory()",
-        pass: false,
-        explain: "iOS sandbox ไม่อนุญาตให้ share ไฟล์จาก Documents โดยตรง ต้องใช้ tmp folder เท่านั้น"
-      },
-      {
-        module: "Module 6 — Dynamic Excel Export",
-        question: "workbook.encode() return null แล้วไม่เช็ค จะเกิดอะไร?",
-        answered: "C — Crash ด้วย Null check operator",
-        correct: "C — Crash ด้วย Null check operator",
-        pass: true,
-        explain: "encode() คืนค่า List<int>? — ถ้า sheet ว่างจะ return null แล้ว ! operator crash ทันที"
-      },
-      {
-        module: "Module 5 — AI Summary Integration",
-        question: "ทำไม AiSummaryService ถึงต้องอยู่ใน domain layer แทนที่จะอยู่ใน data layer?",
-        answered: "B",
-        correct: "B",
-        pass: true,
-        explain: "domain layer ไม่ขึ้นกับ package ภายนอก — ถ้าวันหลังเปลี่ยนจาก Gemini เป็น OpenAI ไม่ต้องแก้ domain เลย"
-      },
-      {
-        module: "Module 5 — AI Summary Integration",
-        question: "ถ้า Gemini API ตอบกลับ HTTP 429 (rate limit) app ควรทำอะไร?",
-        answered: "A — แสดง error message ทันที",
-        correct: "B — retry อัตโนมัติหลัง delay แล้วค่อยแสดง error ถ้าหมด max attempts",
-        pass: false,
-        note: "ไม่นับผิด — ยังไม่ได้สอนเรื่อง 429 ก่อนถาม",
-        explain: "429 = ส่ง request เร็วเกินไปชั่วคราว ไม่ใช่ quota หมดถาวร — wait 1-2 วิแล้ว retry มักผ่านเลย"
-      }
-    ];
-
-    const quizList = document.getElementById("quizList");
-    quizLog.forEach((q) => {
-      const card = document.createElement("div");
-      card.className = "quiz-card";
-      card.innerHTML = `
-        <div class="quiz-module">${q.module}</div>
-        <div class="quiz-question">${q.question}</div>
-        <div class="quiz-row">
-          <span class="quiz-label">คำตอบที่ตอบ:</span>
-          <span class="quiz-answer ${q.pass ? 'quiz-correct' : 'quiz-wrong'}">${q.answered} ${q.pass ? '✅' : '❌'}</span>
-        </div>
-        <div class="quiz-row">
-          <span class="quiz-label">เฉลย:</span>
-          <span class="quiz-correct">${q.correct}</span>
-        </div>
-        ${q.note ? `<div class="quiz-note">* ${q.note}</div>` : ''}
-        <div class="quiz-explain">${q.explain}</div>
-      `;
-      quizList.appendChild(card);
-    });
-
-    const lessonList = document.getElementById("lessonList");
-
-    lessons.forEach((lesson, index) => {
-      const card = document.createElement("article");
-      card.className = "card";
-      card.innerHTML = `
-        <div class="card-header">
-          <div>
-            <p class="status">${statusIcon[lesson.status] || "⬜"} ${lesson.status.toUpperCase()}</p>
-            <h2 class="card-title">${lesson.title}</h2>
+      // render quiz log
+      const quizList = document.getElementById("quizList");
+      quizLog.forEach((q) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.innerHTML = `
+          <div class="quiz-module">${q.module}</div>
+          <div class="quiz-question">${q.question}</div>
+          <div class="quiz-row">
+            <span class="quiz-label">คำตอบที่ตอบ:</span>
+            <span class="quiz-answer ${q.pass ? 'quiz-correct' : 'quiz-wrong'}">${q.answered} ${q.pass ? '✅' : '❌'}</span>
           </div>
-          <div class="card-meta">
-            <span>วันที่: ${lesson.date || "ยังไม่ได้กำหนด"}</span>
-            <span>คะแนน: ${lesson.score || "-"}</span>
+          <div class="quiz-row">
+            <span class="quiz-label">เฉลย:</span>
+            <span class="quiz-correct">${q.correct}</span>
           </div>
-        </div>
-        <div class="details" id="details-${index}">
-          <div class="detail-row"><span class="detail-label">Concept:</span> ${lesson.concept}</div>
-          ${lesson.notes ? `<div class="detail-row"><span class="detail-label">จุดสำคัญ:</span><ul style="margin:8px 0 0;padding-left:20px;">${lesson.notes.map(n => `<li>${n}</li>`).join('')}</ul></div>` : ''}
-        </div>
-      `;
-
-      card.addEventListener("click", () => {
-        const detail = document.getElementById(`details-${index}`);
-        detail.classList.toggle("visible");
+          ${q.note ? `<div class="quiz-note">* ${q.note}</div>` : ''}
+          <div class="quiz-explain">${q.explain}</div>
+        `;
+        quizList.appendChild(card);
       });
 
-      lessonList.appendChild(card);
+      // render lesson cards
+      const lessonList = document.getElementById("lessonList");
+      lessons.forEach((lesson, index) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <p class="status">${statusIcon[lesson.status] || "⬜"} ${lesson.status.toUpperCase()}</p>
+              <h2 class="card-title">${lesson.title}</h2>
+            </div>
+            <div class="card-meta">
+              <span>วันที่: ${lesson.date || "ยังไม่ได้กำหนด"}</span>
+              <span>คะแนน: ${lesson.score || "-"}</span>
+            </div>
+          </div>
+          <div class="details" id="details-${index}">
+            <div class="detail-row"><span class="detail-label">Concept:</span> ${lesson.concept}</div>
+            ${lesson.notes ? `<div class="detail-row"><span class="detail-label">จุดสำคัญ:</span><ul style="margin:8px 0 0;padding-left:20px;">${lesson.notes.map(n => `<li>${n}</li>`).join('')}</ul></div>` : ''}
+          </div>
+        `;
+        card.addEventListener("click", () => {
+          document.getElementById(`details-${index}`).classList.toggle("visible");
+        });
+        lessonList.appendChild(card);
+      });
     });
   </script>
 </body>

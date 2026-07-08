@@ -31,6 +31,15 @@
    - คำตอบที่ตอบ: <ตัวเลือกที่ผู้เรียนตอบ>
    - เฉลย: <ตัวเลือกที่ถูก> ✅/❌
    - อธิบาย: <เหตุผลสั้นๆ>
+10. อัปเดต showcase/data/lessons.json — เพิ่ม/แก้ไข entry ของ module นี้:
+    - status: "pass" หรือ "pending"
+    - date: วันที่วันนี้ (YYYY-MM-DD)
+    - score: "X/2"
+    - notes: จุดสำคัญที่ผู้เรียนควรจำ (3-6 ข้อ)
+11. อัปเดต showcase/data/quiz.json — prepend quiz 2 ข้อของ module นี้ไว้ด้านบนสุดของ array:
+    - module: "Module X — <ชื่อ>"
+    - question, answered, correct, pass, explain ครบทุกฟิลด์
+    - ถ้ามี note (เช่น ไม่นับผิด) ให้ใส่ฟิลด์ note ด้วย
 
 ## กฎการสอน implement (ห้ามละเมิด)
 - ❌ ห้ามเขียนโค้ดลงไฟล์ project ของผู้เรียนโดยตรง (ห้ามใช้ Edit/Write tool กับ project)

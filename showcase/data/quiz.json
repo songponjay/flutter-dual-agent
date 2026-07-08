@@ -1,0 +1,67 @@
+[
+  {
+    "module": "Module 8 — Dark/Light Mode + Portfolio Polish",
+    "question": "ทำไมต้องลบ const ออกจาก ProviderScope เมื่อใส่ overrides?",
+    "answered": "C — ProviderScope ไม่รองรับ const เลย",
+    "correct": "B — const ต้องการค่า compile-time แต่ SharedPreferences โหลดตอน runtime",
+    "pass": false,
+    "explain": "const ต้องการค่า compile-time แต่ SharedPreferences.getInstance() โหลดตอน runtime จึงใส่ใน const expression ไม่ได้"
+  },
+  {
+    "module": "Module 8 — Dark/Light Mode + Portfolio Polish",
+    "question": "ถ้า hardcode Colors.white ใน Widget จะเกิดอะไรใน dark mode?",
+    "answered": "C — Flutter auto-convert ให้",
+    "correct": "B — Widget ยังขาวอยู่ อาจกลายเป็น white-on-white",
+    "pass": false,
+    "explain": "Flutter ไม่ auto-convert สี — ถ้า hardcode ไว้จะยังขาวอยู่ ควรใช้ Theme.of(context).colorScheme แทนเสมอ"
+  },
+  {
+    "module": "Module 7 — Auth: Local Mock → Firebase",
+    "question": "ทำไม GoRouter ต้องใช้ refreshListenable?",
+    "answered": "C — ให้ LoginScreen rebuild อัตโนมัติ",
+    "correct": "B — บอก GoRouter ให้ re-evaluate redirect() ใหม่เมื่อ auth state เปลี่ยน",
+    "pass": false,
+    "explain": "refreshListenable บอก GoRouter ให้ re-evaluate redirect() ใหม่เมื่อ auth state เปลี่ยน ไม่ใช่ rebuild Widget"
+  },
+  {
+    "module": "Module 7 — Auth: Local Mock → Firebase",
+    "question": "ถ้าอยากเปลี่ยนจาก MockAuthRepository เป็น FirebaseAuthRepository ต้องแก้ไฟล์ไหน?",
+    "answered": "B",
+    "correct": "B",
+    "pass": true,
+    "explain": "แก้แค่ authRepositoryProvider บรรทัดเดียว เพราะ AuthRepository เป็น abstract class ทุกส่วนอื่นไม่รู้ว่าใช้ implementation ไหน"
+  },
+  {
+    "module": "Module 6 — Dynamic Excel Export",
+    "question": "ควรใช้ directory ไหนก่อน share_plus บน iOS?",
+    "answered": "C — ใช้ได้ทั้งคู่",
+    "correct": "B — getTemporaryDirectory()",
+    "pass": false,
+    "explain": "iOS sandbox ไม่อนุญาตให้ share ไฟล์จาก Documents โดยตรง ต้องใช้ tmp folder เท่านั้น"
+  },
+  {
+    "module": "Module 6 — Dynamic Excel Export",
+    "question": "workbook.encode() return null แล้วไม่เช็ค จะเกิดอะไร?",
+    "answered": "C — Crash ด้วย Null check operator",
+    "correct": "C — Crash ด้วย Null check operator",
+    "pass": true,
+    "explain": "encode() คืนค่า List<int>? — ถ้า sheet ว่างจะ return null แล้ว ! operator crash ทันที"
+  },
+  {
+    "module": "Module 5 — AI Summary Integration",
+    "question": "ทำไม AiSummaryService ถึงต้องอยู่ใน domain layer แทนที่จะอยู่ใน data layer?",
+    "answered": "B",
+    "correct": "B",
+    "pass": true,
+    "explain": "domain layer ไม่ขึ้นกับ package ภายนอก — ถ้าวันหลังเปลี่ยนจาก Gemini เป็น OpenAI ไม่ต้องแก้ domain เลย"
+  },
+  {
+    "module": "Module 5 — AI Summary Integration",
+    "question": "ถ้า Gemini API ตอบกลับ HTTP 429 (rate limit) app ควรทำอะไร?",
+    "answered": "A — แสดง error message ทันที",
+    "correct": "B — retry อัตโนมัติหลัง delay แล้วค่อยแสดง error ถ้าหมด max attempts",
+    "pass": false,
+    "note": "ไม่นับผิด — ยังไม่ได้สอนเรื่อง 429 ก่อนถาม",
+    "explain": "429 = ส่ง request เร็วเกินไปชั่วคราว ไม่ใช่ quota หมดถาวร — wait 1-2 วิแล้ว retry มักผ่านเลย"
+  }
+]
