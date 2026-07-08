@@ -1,5 +1,6 @@
 [
   {
+    "stack": "flutter",
     "title": "Module 8: Dark/Light Mode + Portfolio Polish",
     "date": "2026-05-27",
     "score": "0/2",
@@ -13,6 +14,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 7: Auth Mock → Firebase",
     "date": "2026-05-27",
     "score": "1/2",
@@ -25,6 +27,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 6: Dynamic Excel Export",
     "date": "2026-05-27",
     "score": "1/2",
@@ -40,6 +43,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 5: AI Summary Integration",
     "date": "2026-05-27",
     "score": "1/2",
@@ -53,6 +57,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 4: REST API + Error Handling + Retry",
     "date": "2026-05-26",
     "score": "1/2",
@@ -66,6 +71,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 3: SQLite Offline Cache",
     "date": "2026-05-25",
     "score": "1/2",
@@ -78,6 +84,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 2: Riverpod AsyncNotifier",
     "date": "2026-05-21",
     "score": "1/2",
@@ -93,6 +100,7 @@
     ]
   },
   {
+    "stack": "flutter",
     "title": "Module 1: Clean Architecture Scaffold",
     "date": "2026-05-19",
     "score": "1/2",

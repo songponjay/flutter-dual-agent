@@ -154,7 +154,11 @@
       <p>สรุปสถานะการเรียนรู้ของบทเรียน Flutter & React พร้อมสถานะ pass/fail/pending</p>
     </header>
 
-    <div class="lessons" id="lessonList"></div>
+    <h2 class="section-title">⚛️ React</h2>
+    <div class="lessons" id="reactList"></div>
+
+    <h2 class="section-title">🐦 Flutter</h2>
+    <div class="lessons" id="flutterList"></div>
 
     <h2 class="section-title">Quiz Log — คำถาม / คำตอบ / เฉลย</h2>
     <div id="quizList"></div>
@@ -190,8 +194,10 @@
         quizList.appendChild(card);
       });
 
-      // render lesson cards
-      const lessonList = document.getElementById("lessonList");
+      // render lesson cards แยก section ตาม stack
+      const flutterList = document.getElementById("flutterList");
+      const reactList = document.getElementById("reactList");
+
       lessons.forEach((lesson, index) => {
         const card = document.createElement("article");
         card.className = "card";
@@ -214,7 +220,8 @@
         card.addEventListener("click", () => {
           document.getElementById(`details-${index}`).classList.toggle("visible");
         });
-        lessonList.appendChild(card);
+        const target = lesson.stack === "react" ? reactList : flutterList;
+        target.appendChild(card);
       });
     });
   </script>
