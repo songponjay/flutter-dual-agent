@@ -17,7 +17,12 @@
       "Prepared statement (?) ใน better-sqlite3 กัน SQL injection อัตโนมัติ",
       "req.params.id เป็น string เสมอ ต้อง Number() ถ้าเทียบกับตัวเลข",
       "การอ่าน error message ใน stack trace = สกิลดีบั๊กสำคัญที่สุด (HTTP 500 = ไปดู terminal backend)",
-      ".gitignore ต้องมี node_modules/ ก่อน push GitHub — ไม่งั้น repo หนัก 100+ MB"
+      ".gitignore ต้องมี node_modules/ ก่อน push GitHub — ไม่งั้น repo หนัก 100+ MB",
+      "⚠️ Windows pitfall: node --watch บางที restart ไม่จริง → 2 processes ซ้อนบน port เดียว → request วิ่งไป code เก่า/ใหม่สลับกัน ต้อง netstat -ano | findstr :3001 → taskkill /PID xxx /F",
+      "⚠️ input type='number' + คีย์บอร์ดไทย = พิมพ์ '2020' ได้เลขไทย '๒๐๒๐' → HTML block silent → state ว่าง → ส่ง null ใช้ type='text' + ให้ SQLite type affinity แปลง string→INTEGER แทน",
+      "etc field expansion (year INTEGER + status TEXT default) — โจทย์ 'etc...' แปลว่าอยากเห็น initiative เพิ่ม field ที่มีความหมาย (year = obvious, status dropdown = business logic)",
+      "SQLite CREATE TABLE IF NOT EXISTS ไม่ ALTER ตารางเดิม — เพิ่ม column ต้องลบ .db file แล้วให้สร้างใหม่ (dev-only, prod ต้อง migration script)",
+      "DevTools debugging workflow: Network → Payload (frontend ส่งอะไร) vs Response (backend ตอบอะไร) เทียบกันเจอปัญหาเร็วกว่า console.log"
     ]
   },
   {
